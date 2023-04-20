@@ -37,5 +37,15 @@ export const action = async ({request , params}) => {
   if(!response.ok){
     throw json({message : 'Error while authenticating user'}, {status : 500})
   }
+
+  const resData = await response.json();
+  const token = resData.token;
+
+  localStorage.setItem('token', token);
+
+  const expiration = new Date();
+  expiration.setHours(expiration.getHours() + 1);
+  localStorage.setItem('expiration', expiration);
+
   return redirect('/');
 }
